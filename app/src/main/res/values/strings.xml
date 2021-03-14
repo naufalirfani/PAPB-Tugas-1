@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Navigation</string>
+    <string name="main_viewpager">Main ViewPager</string>
 </resources>
