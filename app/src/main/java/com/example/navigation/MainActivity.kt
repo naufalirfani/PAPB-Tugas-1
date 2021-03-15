@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.title = "ViewPager and TabLayout"
 
-        binding.mainTab.setTabTextColors(Color.parseColor("#BDBDBD"), Color.parseColor("#000000"))
+        binding.mainTab.setTabTextColors(Color.parseColor("#BDBDBD"), Color.parseColor("#FFFFFF"))
 
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         binding.pager.adapter = pagerAdapter
