@@ -1,4 +1,4 @@
-package com.example.navigation
+package com.team8.moviecatalog
 
 import org.junit.Test
 

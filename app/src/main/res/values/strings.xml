@@ -1,9 +1,15 @@
 <resources>
-    <string name="app_name">Navigation</string>
-    <string name="main_viewpager">Main ViewPager</string>
+    <string name="app_name">Movie Catalog</string>
+    <string name="favorite_viewpager">Favorite ViewPager</string>
+    <string name="title_movie">Movie</string>
+    <string name="title_anime">Anime</string>
+    <string name="title_favorite">Favorite</string>
+
+    <!--Empty States-->
+    <string name="empty_state_title_no_conn">No internet connection</string>
+    <string name="empty_state_title_no_favorite_item">No favorites yet.</string>
+    <string name="empty_state_desc_no_favorite_item_movie">You don\'t have a list of favorite movies</string>
+    <string name="empty_state_desc_no_favorite_item_anime">You don\'t have a list of favorite anime</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="beranda">Beranda</string>
-    <string name="kategori">Kategori</string>
-    <string name="status">Status</string>
 </resources>
