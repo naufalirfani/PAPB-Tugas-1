@@ -1,22 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.movie.MovieFragment">
 
-    <TextView
-        android:id="@+id/tvFragmentBeranda"
-        android:layout_width="wrap_content"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_movie"
-        android:textSize="60sp"
-        android:textColor="?colorPrimaryVariant"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?colorPrimaryVariant"
+            app:expandedTitleMarginBottom="20dp"
+            app:expandedTitleMarginStart="15dp"
+            app:layout_scrollFlags="scroll">
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/imageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="268dp"
+                android:background="?colorOnPrimary"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="right"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorMarginBottom="42dp"
+                app:sliderIndicatorRadius="3dp"
+                app:sliderIndicatorSelectedColor="@color/white"
+                app:sliderIndicatorUnselectedColor="@android:color/transparent"
+                app:sliderScrollTimeInSec="2"
+                app:sliderStartAutoCycle="true"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/bg_detail_title" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/detail_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include layout="@layout/fragment_movie_content"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
