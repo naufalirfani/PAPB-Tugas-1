@@ -16,4 +16,6 @@
     <string name="title_image_slider">Image Slider</string>
     <string name="trailer">Trailer</string>
     <string name="genre">Genre</string>
+    <string name="enable_dark_mode">Enable dark mode</string>
+    <string name="setting">Setting</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.team8.moviecatalog.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.smarteist.autoimageslider.SliderViewAdapter
 import com.team8.moviecatalog.R
+import com.team8.moviecatalog.SettingActivity
 import com.team8.moviecatalog.models.movie.ResultItem
 import com.team8.moviecatalog.utils.loadFromUrl
 import kotlinx.android.synthetic.main.image_slider_layout_item.view.*

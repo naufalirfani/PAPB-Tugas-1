@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/genre"
         android:alpha="0.6"
-        android:textColor="?colorPrimaryVariant"
+        android:textColor="?colorSecondary"
         android:fontFamily="@font/pt_sans_regular"
         android:textSize="14sp"
         android:layout_marginStart="4dp"

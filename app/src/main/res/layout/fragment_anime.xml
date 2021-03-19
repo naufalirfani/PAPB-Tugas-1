@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title_anime"
         android:textSize="60sp"
-        android:textColor="?colorPrimaryVariant"
+        android:textColor="?colorSecondary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -51,4 +51,8 @@
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">@font/pt_sans_bold</item>
     </style>
+
+    <style name="switchStyle" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="thumbTint">@color/custom_thumb_selector</item>
+    </style>
 </resources>

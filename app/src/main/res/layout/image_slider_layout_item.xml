@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/pt_sans_bold"
         android:text="@string/trailer"
+        android:textColor="@color/white"
         android:clickable="false"
         android:backgroundTint="@color/red"
         android:textAllCaps="false"
