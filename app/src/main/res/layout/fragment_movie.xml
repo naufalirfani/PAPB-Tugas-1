@@ -26,7 +26,7 @@
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/imageSlider"
                 android:layout_width="match_parent"
-                android:layout_height="268dp"
+                android:layout_height="400dp"
                 android:background="?colorOnPrimary"
                 app:sliderAnimationDuration="600"
                 app:sliderAutoCycleDirection="right"
@@ -36,24 +36,18 @@
                 app:sliderIndicatorMargin="15dp"
                 app:sliderIndicatorOrientation="horizontal"
                 app:sliderIndicatorPadding="3dp"
-                app:sliderIndicatorMarginBottom="42dp"
+                app:sliderIndicatorMarginBottom="16dp"
                 app:sliderIndicatorRadius="3dp"
                 app:sliderIndicatorSelectedColor="@color/white"
-                app:sliderIndicatorUnselectedColor="@android:color/transparent"
+                app:sliderIndicatorUnselectedColor="@color/grey_inactive"
                 app:sliderScrollTimeInSec="2"
                 app:sliderStartAutoCycle="true"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/bg_detail_title" />
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="80dp"
                 app:contentInsetStart="0dp"
                 app:contentInsetStartWithNavigation="0dp"
                 app:layout_collapseMode="pin"
@@ -63,6 +57,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/fragment_movie_content"/>
+    <include layout="@layout/fragment_movie_content" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
