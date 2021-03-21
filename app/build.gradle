@@ -61,6 +61,7 @@ dependencies {
     //viewmodel
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 
     //coordinator layout
     'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
@@ -77,6 +78,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     // Dagger 2
     def dagger_version = "2.27"
@@ -87,4 +90,6 @@ dependencies {
 
     //preference
     implementation 'androidx.preference:preference:1.1.1'
+    
+
 }
