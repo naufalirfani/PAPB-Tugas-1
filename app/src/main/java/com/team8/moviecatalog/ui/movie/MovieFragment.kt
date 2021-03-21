@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
@@ -30,6 +31,7 @@ class MovieFragment : Fragment() {
     private var arrayMovieNewUpload = ArrayList<ResultItem?>()
     private var listRandom: MutableList<Int> = mutableListOf()
     private lateinit var genreAdapter: GenreAdapter
+    private lateinit var mShimmerViewContainer: ShimmerFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +42,8 @@ class MovieFragment : Fragment() {
             Toast.makeText(context, "dasdsa", Toast.LENGTH_SHORT).show()
         }
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
+        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
+        mShimmerViewContainer.startShimmerAnimation()
         return root
     }
 
@@ -80,13 +84,18 @@ class MovieFragment : Fragment() {
         }
 
         val sliderView: SliderView? = view?.findViewById(R.id.imageSlider)
-        val sliderAdapter = SliderAdapter()
-        sliderAdapter.setData(arraySlider)
-        sliderView?.setSliderAdapter(sliderAdapter)
+        val sliderAdapter = context?.let { SliderAdapter(it) }
+        sliderAdapter?.setData(arraySlider)
+        if (sliderAdapter != null) {
+            sliderView?.setSliderAdapter(sliderAdapter)
+        }
         sliderView?.setIndicatorAnimation(IndicatorAnimationType.FILL)
         sliderView?.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
         sliderView?.isAutoCycle = true
         sliderView?.startAutoCycle()
+
+        mShimmerViewContainer.stopShimmerAnimation()
+        mShimmerViewContainer.visibility = View.GONE
 
     }
 
