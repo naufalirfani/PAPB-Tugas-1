@@ -1,5 +1,6 @@
 package com.team8.moviecatalog.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import com.team8.moviecatalog.GenreActivity
 import com.team8.moviecatalog.R
 import kotlinx.android.synthetic.main.image_slider_layout_item.view.*
 import kotlinx.android.synthetic.main.item_movie_genre.view.*
@@ -53,6 +55,12 @@ class GenreAdapter() : RecyclerView.Adapter<GenreAdapter.Holder>() {
 
         holder.itemView.tv_genre.text = genreText
         holder.itemView.btn_genre.setImageResource(genreImage)
+
+        holder.itemView.btn_genre.setOnClickListener {
+            val genreIntent = Intent(holder.itemView.context, GenreActivity::class.java)
+            genreIntent.putExtra("genre", genreText)
+            holder.itemView.context.startActivity(genreIntent)
+        }
 
     }
 

@@ -9,17 +9,19 @@ import com.team8.moviecatalog.models.movie.Movie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.logging.Logger
 
 class MovieViewModel : MovieDataSource, ViewModel() {
 
     private val movieClient: MovieClient = MovieClient()
     private var movieData =  MutableLiveData<Movie>()
+    private var movieDataByGenre =  MutableLiveData<Movie>()
 
     override fun getMovieNewUpload(page: Int?): LiveData<Movie> {
         movieClient.getService().getMovieNewUpload(page)
                 .enqueue(object : Callback<Movie> {
                     override fun onFailure(call: Call<Movie>, t: Throwable) {
-//                        showErrorToast()
+                        Logger.getLogger(t.message.toString())
                     }
 
                     override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
@@ -47,14 +49,21 @@ class MovieViewModel : MovieDataSource, ViewModel() {
     }
 
     override fun getMovieByGenre(genre: String?, page: Int?): LiveData<Movie> {
-        TODO("Not yet implemented")
+        movieClient.getService().getMovieByGenre(genre, page)
+                .enqueue(object : Callback<Movie> {
+                    override fun onFailure(call: Call<Movie>, t: Throwable) {
+                        Logger.getLogger(t.message.toString())
+                    }
+
+                    override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                        movieData.value = response.body()
+                    }
+
+                })
+        return movieData
     }
 
     override fun getMovieBySearch(query: String?, page: Int?): LiveData<Movie> {
         TODO("Not yet implemented")
     }
-
-//    private fun showErrorToast(){
-//        Toast.makeText(getApplication(), context.getString(R.string.connection_failure), Toast.LENGTH_SHORT).show()
-//    }
 }

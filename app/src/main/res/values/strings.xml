@@ -18,4 +18,5 @@
     <string name="genre">Genre</string>
     <string name="enable_dark_mode">Enable dark mode</string>
     <string name="setting">Setting</string>
+    <string name="title_movie_image">Movie Image</string>
 </resources>

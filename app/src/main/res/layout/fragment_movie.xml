@@ -98,44 +98,44 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <include
-                        layout="@layout/shimmer_item_genre"
+                        layout="@layout/shimmer_item_button_genre"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
