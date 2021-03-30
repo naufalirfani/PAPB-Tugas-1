@@ -18,6 +18,7 @@ class MovieViewModel : MovieDataSource, ViewModel() {
     private var movieDataByGenre =  MutableLiveData<Movie>()
 
     override fun getMovieNewUpload(page: Int?): LiveData<Movie> {
+        movieData.value = null
         movieClient.getService().getMovieNewUpload(page)
                 .enqueue(object : Callback<Movie> {
                     override fun onFailure(call: Call<Movie>, t: Throwable) {

@@ -1,68 +1,68 @@
 package com.team8.moviecatalog.adapter
 
-import android.content.Intent
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
-import com.team8.moviecatalog.GenreActivity
 import com.team8.moviecatalog.R
 import com.team8.moviecatalog.models.movie.ResultItem
-import kotlinx.android.synthetic.main.image_slider_layout_item.view.*
-import kotlinx.android.synthetic.main.item_movie__data_genre.view.*
-import kotlinx.android.synthetic.main.item_movie_genre.view.*
-import kotlin.collections.ArrayList
 
 
-class MovieByGenreAdapter() : RecyclerView.Adapter<MovieByGenreAdapter.Holder>() {
+open class MovieByGenreAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+    private var movieResults = ArrayList<ResultItem?>()
+    private var isLoadingAdded = false
 
-    private var arrayMovieByGenre = ArrayList<ResultItem?>()
 
-    fun setData(array: ArrayList<ResultItem?>) {
-        this.arrayMovieByGenre = array
+    fun setData(moveResults: ArrayList<ResultItem?>) {
+        this.movieResults = moveResults
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): Holder {
-        val view: View = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_movie__data_genre, viewGroup, false)
-        return Holder(view)
+    fun addData(movieResults: ArrayList<ResultItem?>) {
+        this.movieResults.addAll(movieResults)
+        notifyItemInserted(this.movieResults.size - 1)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        val movieByGenre = arrayMovieByGenre[position]
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val viewHolder: RecyclerView.ViewHolder?
+        val inflater = LayoutInflater.from(parent.context)
+        val viewItem: View =
+                inflater.inflate(R.layout.item_movie__data_genre, parent, false)
+        viewHolder = MovieVH(viewItem)
+        return viewHolder
+    }
 
-        if(movieByGenre?.thumbnail.isNullOrEmpty()){
-            Glide.with(holder.itemView).clear(holder.itemView.movie_genre_image)
-            Glide.with(holder.itemView)
-                .load(R.drawable.image_placeholder)
-                .fitCenter()
-                .into(holder.itemView.movie_genre_image)
-        }
-        else{
-            Glide.with(holder.itemView).clear(holder.itemView.movie_genre_image)
-            Glide.with(holder.itemView)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val movieByGenre = movieResults[position] // Movie
+        val movieVH = holder as MovieVH
+        Glide.with(context).clear(movieVH.mPosterImg)
+        Glide.with(context)
                 .load(movieByGenre?.thumbnail)
-                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888)
-                    .override(Target.SIZE_ORIGINAL))
+//                .apply(RequestOptions().fitCenter().format(DecodeFormat.PREFER_ARGB_8888)
+//                        .override(Target.SIZE_ORIGINAL))
                 .fitCenter()
-                .into(holder.itemView.movie_genre_image)
-        }
-//        holder.itemView.setOnClickListener {
-//            val genreIntent = Intent(holder.itemView.context, GenreActivity::class.java)
-//            genreIntent.putExtra("genre", genreText)
-//            holder.itemView.context.startActivity(genreIntent)
-//        }
-
+                .into(movieVH.mPosterImg)
     }
 
     override fun getItemCount(): Int {
-        return arrayMovieByGenre.size
+        return movieResults.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (position == movieResults.size - 1 && isLoadingAdded) LOADING else ITEM
+    }
 
-    class Holder(view: View) : RecyclerView.ViewHolder(view)
+    private inner class MovieVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val mPosterImg: ImageView = itemView.findViewById<View>(R.id.movie_genre_image) as ImageView
+
+    }
+
+    protected inner class LoadingVH(itemView: View?) : RecyclerView.ViewHolder(itemView!!)
+    companion object {
+        private const val ITEM = 0
+        private const val LOADING = 1
+    }
 }

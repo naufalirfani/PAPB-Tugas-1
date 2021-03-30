@@ -50,12 +50,13 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieViewModel.getMovieNewUpload(2).observe({ lifecycle }, {
+        movieViewModel.getMovieNewUpload(1).observe({ lifecycle }, {
             it?.result?.forEach { resultItem ->
                 arrayMovieNewUpload.add(resultItem)
             }
-            setSlider(arrayMovieNewUpload)
-            setGenre()
+            if(arrayMovieNewUpload.isNotEmpty()){
+                setSlider(arrayMovieNewUpload)
+            }
         })
 
         btn_setting.setOnClickListener {
@@ -97,6 +98,7 @@ class MovieFragment : Fragment() {
         mShimmerViewContainer.stopShimmerAnimation()
         mShimmerViewContainer.visibility = View.GONE
 
+        setGenre()
     }
 
     private fun setGenre(){
