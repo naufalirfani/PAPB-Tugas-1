@@ -13,11 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Navigation"
         android:usesCleartextTraffic="true">
-        <activity android:name=".GenreActivity"></activity>
+        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".GenreActivity" />
         <activity
             android:name=".TrailerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -11,7 +11,7 @@ import com.team8.moviecatalog.R
 import com.team8.moviecatalog.models.movie.ResultItem
 
 
-open class MovieByGenreAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+open class MovieByAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
     private var movieResults = ArrayList<ResultItem?>()
     private var isLoadingAdded = false
 
@@ -19,6 +19,7 @@ open class MovieByGenreAdapter(private val context: Context) : RecyclerView.Adap
     fun setData(moveResults: ArrayList<ResultItem?>) {
         this.movieResults = moveResults
         notifyDataSetChanged()
+        notifyItemInserted(0)
     }
 
     fun addData(movieResults: ArrayList<ResultItem?>) {

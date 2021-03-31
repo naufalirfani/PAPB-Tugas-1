@@ -20,4 +20,5 @@
     <string name="setting">Setting</string>
     <string name="title_movie_image">Movie Image</string>
     <string name="search_movie">Search Movie</string>
+    <string name="nothing_found">Nothing found</string>
 </resources>

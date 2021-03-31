@@ -14,6 +14,7 @@ import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnima
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
 import com.team8.moviecatalog.R
+import com.team8.moviecatalog.SearchActivity
 import com.team8.moviecatalog.SettingActivity
 import com.team8.moviecatalog.adapter.GenreAdapter
 import com.team8.moviecatalog.adapter.SliderAdapter
@@ -29,6 +30,7 @@ class MovieFragment : Fragment() {
     private lateinit var movieViewModel: MovieViewModel
     private var arraySlider = ArrayList<ResultItem?>()
     private var arrayMovieNewUpload = ArrayList<ResultItem?>()
+    private var arrayMovieTitle = ArrayList<String>()
     private var listRandom: MutableList<Int> = mutableListOf()
     private lateinit var genreAdapter: GenreAdapter
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
@@ -53,6 +55,7 @@ class MovieFragment : Fragment() {
         movieViewModel.getMovieNewUpload(1).observe({ lifecycle }, {
             it?.result?.forEach { resultItem ->
                 arrayMovieNewUpload.add(resultItem)
+                arrayMovieTitle.add(resultItem?.title.toString())
             }
             if(arrayMovieNewUpload.isNotEmpty()){
                 setSlider(arrayMovieNewUpload)
@@ -62,6 +65,13 @@ class MovieFragment : Fragment() {
         btn_setting.setOnClickListener {
             val settingIntent = Intent(context, SettingActivity::class.java)
             context?.startActivity(settingIntent)
+        }
+
+        btn_search_movie.setOnClickListener {
+            val searchIntent = Intent(context, SearchActivity::class.java)
+            searchIntent.putExtra("activity", "movie")
+            searchIntent.putStringArrayListExtra("arrayMovieTitle", arrayMovieTitle)
+            context?.startActivity(searchIntent)
         }
     }
 

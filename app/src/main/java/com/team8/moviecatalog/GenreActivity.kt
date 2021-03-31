@@ -11,18 +11,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.team8.moviecatalog.adapter.MovieByGenreAdapter
+import com.team8.moviecatalog.adapter.MovieByAdapter
 import com.team8.moviecatalog.api.movie.MovieClient
 import com.team8.moviecatalog.databinding.ActivityGenreBinding
 import com.team8.moviecatalog.models.movie.Movie
 import com.team8.moviecatalog.models.movie.ResultItem
 import com.team8.moviecatalog.ui.movie.MovieViewModel
-import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import java.util.logging.Logger
 import kotlin.collections.ArrayList
 
 
@@ -34,7 +32,7 @@ class GenreActivity : AppCompatActivity() {
     private val settingActivity = SettingActivity()
     private var arrayMovieByGenre = ArrayList<ResultItem?>()
     private var arrayMovieByGenre2 = ArrayList<ResultItem?>()
-    private lateinit var movieByGenreAdapter: MovieByGenreAdapter
+    private lateinit var movieByAdapter: MovieByAdapter
     private val PAGE_START = 1
     private var currentPage = PAGE_START
     private var isLoading: Boolean = true
@@ -71,7 +69,7 @@ class GenreActivity : AppCompatActivity() {
 
             if(arrayMovieByGenre.isNotEmpty()){
 
-                movieByGenreAdapter.setData(arrayMovieByGenre)
+                movieByAdapter.setData(arrayMovieByGenre)
                 binding.movieGenreShimmerView.stopShimmerAnimation()
                 binding.movieGenreShimmerView.visibility = View.GONE
             }
@@ -82,8 +80,8 @@ class GenreActivity : AppCompatActivity() {
         binding.movieGenreProgressBar.visibility = View.GONE
         val gridLayoutManager = GridLayoutManager(this, 3)
         binding.movieGenreRv.layoutManager = gridLayoutManager
-        movieByGenreAdapter = MovieByGenreAdapter(this)
-        binding.movieGenreRv.adapter = movieByGenreAdapter
+        movieByAdapter = MovieByAdapter(this)
+        binding.movieGenreRv.adapter = movieByAdapter
 
         binding.movieGenreNestedScroll.setOnScrollChangeListener {
             v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
@@ -128,7 +126,7 @@ class GenreActivity : AppCompatActivity() {
                             arrayMovieByGenre2.add(result)
                         }
                         Toast.makeText(this@GenreActivity, arrayMovieByGenre2.size.toString(), Toast.LENGTH_SHORT).show()
-                        movieByGenreAdapter.addData(arrayMovieByGenre2)
+                        movieByAdapter.addData(arrayMovieByGenre2)
                         binding.movieGenreProgressBar.visibility = View.GONE
                         isLoading = false
                     }
