@@ -1,7 +1,9 @@
 # Movie Catalog
 
 ## Instalasi
-```https://github.com/naufalirfani/papb-team8.git```
+```bash
+https://github.com/naufalirfani/papb-team8.git
+```
 
 ## Fitur-fitur Aplikasi
 
