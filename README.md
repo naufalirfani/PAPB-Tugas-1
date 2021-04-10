@@ -3,7 +3,7 @@ Aplikasi **Movie Catalog** merupakan aplikasi katalog film yang memberikan infor
 
 ## Instalasi
 ```bash
-https://github.com/naufalirfani/papb-team8.git
+git clone https://github.com/naufalirfani/papb-team8.git
 ```
 
 ## Fitur-fitur Aplikasi
