@@ -7,6 +7,25 @@ https://github.com/naufalirfani/papb-team8.git
 
 ## Fitur-fitur Aplikasi
 
+## Garis Besar Lifecycle Aplikasi
+- onCreate()
+
+- onStart()
+
+- onResume()
+
+- onPause()
+
+- onStop()
+
+- onDestroy()
+
+## Alasan Pemilihan Arsitektur MVVM
+Alasan kenapa kami memilih menggunakan arsitektur MVVM karena dengan menggunakan arsitektur MVVM, kode yang kami buat dapat termodularisasi dengan lebih baik. Tidak seperti ketika menggunakan MVP dimana View akan selalu bergantung pada Presenter ketika ada perubahan data. Dengan menggunakan MVVM View dapat mengolah data secara langsung dengan logika bisnis yang terpisah dari logika bisnis utama aplikasi, menghasilkan logika bisnis utama aplikasi yang lebih ringkas dan memudahkan debugging maupun pemeliharaan karena modularisasi kode tersebut.
+
+Kami juga melihat dalam pemanfaatan API akan lebih mudah bila menggunakan arsitektur MVVM dibandingkan dengan MVP.
+
+
 ## Contributing
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change
 
