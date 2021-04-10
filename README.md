@@ -1,5 +1,5 @@
 # Movie Catalog
-
+Aplikasi kami merupakan aplikasi katalog film yang memberikan informasi terkait berbagai film dan anime. Aplikasi kami memiliki tiga fitur utama, pertama adalah katalog film, kedua adalah katalog anime, dan ketiga adalah favourite dimana pengguna dapat membuat daftar film dan anime kesukaan pengguna. Aplikasi kami juga menerapkan fitur dark mode yang dapat membuat pengguna nyaman menggunakan aplikasi kami pada kondisi malam hari atau kurang cahaya.
 ## Instalasi
 ```bash
 https://github.com/naufalirfani/papb-team8.git
