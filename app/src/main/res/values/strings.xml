@@ -21,4 +21,5 @@
     <string name="title_movie_image">Movie Image</string>
     <string name="search_movie">Search Movie</string>
     <string name="nothing_found">Nothing found</string>
+    <string name="movie_description">Movie Description</string>
 </resources>

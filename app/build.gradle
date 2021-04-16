@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "MOVIE_BASE_URL", '"https://movie-katalog.herokuapp.com/"')
+        buildConfigField("String", "MOVIE_BASE_URL", '"https://api-lk21.herokuapp.com/"')
     }
 
     buildTypes {
@@ -96,4 +96,7 @@ dependencies {
 
     implementation 'io.reactivex.rxjava2:rxjava:2.1.6'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // Rounded ImageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }

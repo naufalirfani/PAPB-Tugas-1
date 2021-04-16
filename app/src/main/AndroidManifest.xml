@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Navigation"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".SearchActivity" />
         <activity android:name=".GenreActivity" />
         <activity
             android:name=".TrailerActivity"

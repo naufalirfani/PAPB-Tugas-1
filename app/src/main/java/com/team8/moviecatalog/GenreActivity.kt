@@ -125,7 +125,6 @@ class GenreActivity : AppCompatActivity() {
                         for(result in response.body()?.result!!){
                             arrayMovieByGenre2.add(result)
                         }
-                        Toast.makeText(this@GenreActivity, arrayMovieByGenre2.size.toString(), Toast.LENGTH_SHORT).show()
                         movieByAdapter.addData(arrayMovieByGenre2)
                         binding.movieGenreProgressBar.visibility = View.GONE
                         isLoading = false

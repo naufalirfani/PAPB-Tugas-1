@@ -1,7 +1,10 @@
 package com.team8.moviecatalog.models.movie
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ResultItem(
 
 	@field:SerializedName("duration")
@@ -27,4 +30,4 @@ data class ResultItem(
 
 	@field:SerializedName("quality")
 	val quality: String? = null
-)
+):Parcelable

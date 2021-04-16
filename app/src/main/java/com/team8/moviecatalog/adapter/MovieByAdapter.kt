@@ -1,12 +1,14 @@
 package com.team8.moviecatalog.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.team8.moviecatalog.DetailActivity
 import com.team8.moviecatalog.R
 import com.team8.moviecatalog.models.movie.ResultItem
 
@@ -46,6 +48,13 @@ open class MovieByAdapter(private val context: Context) : RecyclerView.Adapter<R
 //                        .override(Target.SIZE_ORIGINAL))
                 .fitCenter()
                 .into(movieVH.mPosterImg)
+
+        holder.itemView.setOnClickListener {
+            val detailIntent = Intent(holder.itemView.context, DetailActivity::class.java)
+            detailIntent.putExtra("movie", movieByGenre)
+            detailIntent.putExtra("activity", "movie")
+            holder.itemView.context.startActivity(detailIntent)
+        }
     }
 
     override fun getItemCount(): Int {
