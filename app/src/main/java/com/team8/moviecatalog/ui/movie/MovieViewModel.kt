@@ -1,5 +1,6 @@
 package com.team8.moviecatalog.ui.movie
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,17 +10,20 @@ import com.team8.moviecatalog.models.movie.Movie
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.logging.Logger
 
 class MovieViewModel : MovieDataSource, ViewModel() {
 
     private val movieClient: MovieClient = MovieClient()
     private var movieData =  MutableLiveData<Movie>()
+    private var movieDataBySearch =  MutableLiveData<Movie>()
 
     override fun getMovieNewUpload(page: Int?): LiveData<Movie> {
+        movieData.value = null
         movieClient.getService().getMovieNewUpload(page)
                 .enqueue(object : Callback<Movie> {
                     override fun onFailure(call: Call<Movie>, t: Throwable) {
-//                        showErrorToast()
+                        Logger.getLogger(t.message.toString())
                     }
 
                     override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
@@ -47,14 +51,33 @@ class MovieViewModel : MovieDataSource, ViewModel() {
     }
 
     override fun getMovieByGenre(genre: String?, page: Int?): LiveData<Movie> {
-        TODO("Not yet implemented")
+        movieClient.getService().getMovieByGenre(genre, page)
+                .enqueue(object : Callback<Movie> {
+                    override fun onFailure(call: Call<Movie>, t: Throwable) {
+                        Logger.getLogger(t.message.toString())
+                    }
+
+                    override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                        movieData.value = response.body()
+                    }
+
+                })
+        return movieData
     }
 
     override fun getMovieBySearch(query: String?, page: Int?): LiveData<Movie> {
-        TODO("Not yet implemented")
-    }
+        movieClient.getService().getMovieBySearch(query, page)
+            .enqueue(object : Callback<Movie> {
+                override fun onFailure(call: Call<Movie>, t: Throwable) {
+                    Logger.getLogger(t.message.toString())
+                }
 
-//    private fun showErrorToast(){
-//        Toast.makeText(getApplication(), context.getString(R.string.connection_failure), Toast.LENGTH_SHORT).show()
-//    }
+                override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
+                    movieDataBySearch.value = response.body()
+
+                }
+
+            })
+        return movieDataBySearch
+    }
 }

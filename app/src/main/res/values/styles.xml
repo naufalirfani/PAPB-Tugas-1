@@ -55,4 +55,8 @@
     <style name="switchStyle" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="thumbTint">@color/custom_thumb_selector</item>
     </style>
+
+    <style name="progressBarRed">
+        <item name="colorAccent">?colorPrimary</item>
+    </style>
 </resources>

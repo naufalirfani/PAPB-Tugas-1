@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType
 import com.smarteist.autoimageslider.SliderAnimations
 import com.smarteist.autoimageslider.SliderView
 import com.team8.moviecatalog.R
+import com.team8.moviecatalog.SearchActivity
 import com.team8.moviecatalog.SettingActivity
 import com.team8.moviecatalog.adapter.GenreAdapter
 import com.team8.moviecatalog.adapter.SliderAdapter
@@ -28,8 +30,10 @@ class MovieFragment : Fragment() {
     private lateinit var movieViewModel: MovieViewModel
     private var arraySlider = ArrayList<ResultItem?>()
     private var arrayMovieNewUpload = ArrayList<ResultItem?>()
+    private var arrayMovieTitle = ArrayList<String>()
     private var listRandom: MutableList<Int> = mutableListOf()
     private lateinit var genreAdapter: GenreAdapter
+    private lateinit var mShimmerViewContainer: ShimmerFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,23 +44,34 @@ class MovieFragment : Fragment() {
             Toast.makeText(context, "dasdsa", Toast.LENGTH_SHORT).show()
         }
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
+        mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
+        mShimmerViewContainer.startShimmerAnimation()
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        movieViewModel.getMovieNewUpload(2).observe({ lifecycle }, {
+        movieViewModel.getMovieNewUpload(1).observe({ lifecycle }, {
             it?.result?.forEach { resultItem ->
                 arrayMovieNewUpload.add(resultItem)
+                arrayMovieTitle.add(resultItem?.title.toString())
             }
-            setSlider(arrayMovieNewUpload)
-            setGenre()
+            if(arrayMovieNewUpload.isNotEmpty()){
+                setSlider(arrayMovieNewUpload)
+            }
         })
 
         btn_setting.setOnClickListener {
             val settingIntent = Intent(context, SettingActivity::class.java)
             context?.startActivity(settingIntent)
+        }
+
+        btn_search_movie.setOnClickListener {
+            val searchIntent = Intent(context, SearchActivity::class.java)
+            searchIntent.putExtra("activity", "movie")
+            searchIntent.putStringArrayListExtra("arrayMovieTitle", arrayMovieTitle)
+            context?.startActivity(searchIntent)
         }
     }
 
@@ -80,14 +95,20 @@ class MovieFragment : Fragment() {
         }
 
         val sliderView: SliderView? = view?.findViewById(R.id.imageSlider)
-        val sliderAdapter = SliderAdapter()
-        sliderAdapter.setData(arraySlider)
-        sliderView?.setSliderAdapter(sliderAdapter)
+        val sliderAdapter = context?.let { SliderAdapter(it) }
+        sliderAdapter?.setData(arraySlider)
+        if (sliderAdapter != null) {
+            sliderView?.setSliderAdapter(sliderAdapter)
+        }
         sliderView?.setIndicatorAnimation(IndicatorAnimationType.FILL)
         sliderView?.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
         sliderView?.isAutoCycle = true
         sliderView?.startAutoCycle()
 
+        mShimmerViewContainer.stopShimmerAnimation()
+        mShimmerViewContainer.visibility = View.GONE
+
+        setGenre()
     }
 
     private fun setGenre(){

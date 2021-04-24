@@ -1,5 +1,6 @@
 package com.team8.moviecatalog.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +12,14 @@ import com.bumptech.glide.request.target.Target
 import com.smarteist.autoimageslider.SliderViewAdapter
 import com.team8.moviecatalog.R
 import com.team8.moviecatalog.SettingActivity
+import com.team8.moviecatalog.TrailerActivity
 import com.team8.moviecatalog.models.movie.ResultItem
 import com.team8.moviecatalog.utils.loadFromUrl
 import kotlinx.android.synthetic.main.image_slider_layout_item.view.*
 import kotlin.collections.ArrayList
 
 
-class SliderAdapter() : SliderViewAdapter<SliderAdapter.Holder>() {
+class SliderAdapter(private val context: Context) : SliderViewAdapter<SliderAdapter.Holder>() {
 
     private var arraySlider = ArrayList<ResultItem?>()
 
@@ -52,10 +54,12 @@ class SliderAdapter() : SliderViewAdapter<SliderAdapter.Holder>() {
                     .into(viewHolder.view.iv_auto_image_slider)
         }
 
-//        viewHolder.itemView.setOnClickListener {
-//            val intent = Intent(context, ConcertActivity::class.java)
-//            context?.startActivity(intent)
-//        }
+        val videoId = sliderItem?.trailer?.replace("https://www.youtube.com/watch?v=", "")
+        viewHolder.itemView.btn_auto_image_slider.setOnClickListener {
+            val intent = Intent(context, TrailerActivity::class.java)
+            intent.putExtra("videoId", videoId)
+            context?.startActivity(intent)
+        }
     }
 
     override fun getCount(): Int {

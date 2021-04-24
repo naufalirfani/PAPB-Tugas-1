@@ -2,8 +2,8 @@ package com.team8.moviecatalog
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.widget.Toast
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.*
@@ -11,15 +11,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.team8.moviecatalog.databinding.ActivityMainBinding
-import com.team8.moviecatalog.utils.MyObserver
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navView: BottomNavigationView
-    // MyObserver
-    private lateinit var myObserver: MyObserver
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,11 +36,21 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // MyObserver
-        myObserver = MyObserver(this, lifecycle)
-        lifecycle.addObserver(myObserver)
-
-
     }
 
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+        else{
+            this.doubleBackToExitPressedOnce = true
+            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
+        }
+
+        val handler = Handler()
+        handler.postDelayed(Runnable { // Do something after 5s = 5000ms
+            doubleBackToExitPressedOnce = false
+        }, 1500)
+    }
 }

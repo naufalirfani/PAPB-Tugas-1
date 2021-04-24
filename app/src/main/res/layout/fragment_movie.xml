@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.movie.MovieFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -59,15 +60,108 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_settings"
                 android:layout_gravity="end"
-                android:layout_margin="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
                 android:clickable="true"
                 android:contentDescription="@string/setting"
                 android:focusable="true" />
+            <TextView
+                android:id="@+id/btn_search_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pt_sans_bold"
+                android:text="@string/search_movie"
+                android:textColor="@color/white"
+                android:clickable="false"
+                android:background="@drawable/bg_search_movie_trans"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:drawablePadding="40dp"
+                android:drawableRight="@drawable/ic_search_white"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="top|center" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/fragment_movie_content" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:translationZ="4dp"
+        shimmer:duration="500">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <include
+                android:id="@+id/shimmer_item_imageslider"
+                layout="@layout/shimmer_item_imageslider" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <include
+                        layout="@layout/shimmer_item_button_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
