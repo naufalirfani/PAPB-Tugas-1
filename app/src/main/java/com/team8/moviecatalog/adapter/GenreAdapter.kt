@@ -1,5 +1,6 @@
 package com.team8.moviecatalog.adapter
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,7 @@ import com.team8.moviecatalog.GenreActivity
 import com.team8.moviecatalog.R
 
 
-class GenreAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+class GenreAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
     private val arrayGenreImage = arrayOf(
             R.drawable.genre_action,
@@ -29,17 +30,17 @@ class GenreAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
             R.drawable.genre_western)
 
     private val arrayGenreText = arrayOf(
-            "Action",
-            "Adventure",
-            "Animation",
-            "Comedy",
-            "Drama",
-            "Fantasy",
-            "Horror",
-            "Romance",
-            "Sci-Fi",
-            "Thriller",
-            "Western")
+            context.getString(R.string.action),
+            context.getString(R.string.adventure),
+            context.getString(R.string.animation),
+            context.getString(R.string.comedy),
+            context.getString(R.string.drama),
+            context.getString(R.string.fantasy),
+            context.getString(R.string.horror),
+            context.getString(R.string.romance),
+            context.getString(R.string.scifi),
+            context.getString(R.string.thriller),
+            context.getString(R.string.western))
 
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): RecyclerView.ViewHolder {
         val viewHolder: RecyclerView.ViewHolder?

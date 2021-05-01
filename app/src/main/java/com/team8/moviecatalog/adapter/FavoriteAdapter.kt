@@ -77,23 +77,23 @@ open class FavoriteAdapter(private val context: Context, private val db: AppMovi
         holder.itemView.setOnLongClickListener {
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setCancelable(true)
-            builder.setTitle("Delete Movie")
+            builder.setTitle(context.getString(R.string.delete_movie))
             builder.setIcon(R.drawable.ic_delete)
-            val message = HtmlCompat.fromHtml("Apakah Anda ingin menghapus " + "<b>" + movieFav.title + "</b>" + " dari favorite?", HtmlCompat.FROM_HTML_MODE_LEGACY)
+            val message = String.format(context.getString(R.string.delete_movie_msg), movieFav.title)
             builder.setMessage(message)
 
             builder.setPositiveButton(
-                "Ya"
+                context.getString(R.string.yes)
             ) { dialog, _ -> // Do nothing but close the dialog
                 GlobalScope.launch {
                     db.movieDao().deleteMovie(movieFav.title.toString())
                 }
-                Toast.makeText(context, "Dihapus dari favorite", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.delete_from_favorite), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
 
             builder.setNegativeButton(
-                "Tidak"
+                context.getString(R.string.no)
             ) { dialog, _ -> // Do nothing
                 dialog.dismiss()
             }

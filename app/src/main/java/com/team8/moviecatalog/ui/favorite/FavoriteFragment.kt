@@ -29,7 +29,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        val sectionsPagerAdapter = PagerAdapter(childFragmentManager)
+        val sectionsPagerAdapter = context?.let { PagerAdapter(childFragmentManager, it) }
         binding.favoriteViewPager.adapter = sectionsPagerAdapter
         binding.favoriteTabLayout.setupWithViewPager(binding.favoriteViewPager)
         binding.favoriteTabLayout.setTabTextColors(Color.parseColor("#A6A6A6"), Color.parseColor("#FFFFFF"))

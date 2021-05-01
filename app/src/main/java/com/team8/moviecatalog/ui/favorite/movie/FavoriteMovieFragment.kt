@@ -6,16 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.team8.moviecatalog.R
 import com.team8.moviecatalog.adapter.FavoriteAdapter
-import com.team8.moviecatalog.adapter.GenreAdapter
 import com.team8.moviecatalog.database.movie.AppMovieDatabase
 import kotlinx.android.synthetic.main.empty_state.*
 import kotlinx.android.synthetic.main.fragment_favorite_movie.*
-import kotlinx.android.synthetic.main.fragment_movie_content.*
 
 
 class FavoriteMovieFragment : Fragment() {

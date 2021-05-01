@@ -117,7 +117,7 @@ class GenreActivity : AppCompatActivity() {
         movieClient.getService().getMovieNewUpload(currentPage)
                 .enqueue(object : Callback<Movie> {
                     override fun onFailure(call: Call<Movie>, t: Throwable) {
-                        Log.i("Errort", t.message.toString())
+                        Log.i("Error", t.message.toString())
                     }
 
                     override fun onResponse(call: Call<Movie>, response: Response<Movie>) {

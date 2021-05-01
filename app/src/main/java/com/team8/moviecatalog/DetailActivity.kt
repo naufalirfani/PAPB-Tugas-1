@@ -95,7 +95,7 @@ class DetailActivity : AppCompatActivity() {
             if (isFavorite){
                 isFavorite = false
                 binding.fabFavorite.imageTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFF"))
-                Toast.makeText(this, "Dihapus dari Favorite", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resources.getString(R.string.delete_from_favorite), Toast.LENGTH_SHORT).show()
                 GlobalScope.launch {
                     db.movieDao().deleteMovie(movie?.title.toString())
                 }
@@ -103,7 +103,7 @@ class DetailActivity : AppCompatActivity() {
             else{
                 isFavorite = true
                 binding.fabFavorite.imageTintList = ColorStateList.valueOf(Color.parseColor("#E50C2F"))
-                Toast.makeText(this, "Ditambahkan ke Favorite", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, resources.getString(R.string.added_to_favorite), Toast.LENGTH_SHORT).show()
                 GlobalScope.launch {
                     db.movieDao().insertMovie(movieFavorite)
                 }
