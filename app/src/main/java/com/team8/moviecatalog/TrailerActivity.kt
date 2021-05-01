@@ -10,23 +10,25 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerFullScreenListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener
-import kotlinx.android.synthetic.main.activity_trailer.*
+import com.team8.moviecatalog.databinding.ActivityTrailerBinding
 
 
 class TrailerActivity : AppCompatActivity(), YouTubePlayerFullScreenListener, YouTubePlayerListener {
 
     private var currentSec: Float = 0F
     private var videoId: String? = null
+    private lateinit var binding: ActivityTrailerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trailer)
+        binding = ActivityTrailerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
         videoId = intent.getStringExtra("videoId")
         initYoutubePlayer(videoId.toString())
-        youtube_player_view.addFullScreenListener(this)
+        binding.youtubePlayerView.addFullScreenListener(this)
     }
 
     override fun onResume() {
@@ -56,8 +58,8 @@ class TrailerActivity : AppCompatActivity(), YouTubePlayerFullScreenListener, Yo
 
     private fun initYoutubePlayer(videoId: String){
 
-        lifecycle.addObserver(youtube_player_view)
-        youtube_player_view.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+        lifecycle.addObserver(binding.youtubePlayerView)
+        binding.youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 youTubePlayer.loadVideo(videoId, currentSec)
             }

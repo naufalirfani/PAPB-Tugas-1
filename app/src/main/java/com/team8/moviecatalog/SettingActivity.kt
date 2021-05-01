@@ -5,26 +5,25 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.text.Html
-import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import androidx.preference.PreferenceManager
-import kotlinx.android.synthetic.main.activity_setting.*
-
+import com.team8.moviecatalog.databinding.ActivitySettingBinding
 
 class SettingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        binding = ActivitySettingBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if(getDefaults("isDarkMode", this) == true)
-            switch_dark_mode.isChecked = true
+            binding.switchDarkMode.isChecked = true
 
-        switch_dark_mode.setOnCheckedChangeListener{_, isChecked ->
+        binding.switchDarkMode.setOnCheckedChangeListener{_, isChecked ->
             if(isChecked)
                 setDefaults("isDarkMode", true, this)
             else

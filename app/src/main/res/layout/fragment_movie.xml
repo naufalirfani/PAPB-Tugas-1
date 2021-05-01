@@ -77,19 +77,21 @@
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:drawablePadding="40dp"
-                android:drawableRight="@drawable/ic_search_white"
                 android:paddingBottom="8dp"
-                android:paddingTop="8dp"
+                android:paddingTop="10dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="16dp"
                 android:layout_marginTop="24dp"
-                android:layout_gravity="top|center" />
+                android:layout_gravity="top|center"
+                app:drawableEndCompat="@drawable/ic_search_white" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/fragment_movie_content" />
+    <include
+        android:id="@+id/fragment_movie_content"
+        layout="@layout/fragment_movie_content" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"

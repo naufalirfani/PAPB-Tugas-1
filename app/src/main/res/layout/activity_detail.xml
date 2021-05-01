@@ -52,7 +52,10 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_detail" />
+    <include
+        android:id="@+id/detail_content"
+        layout="@layout/content_detail" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_favorite"
@@ -60,9 +63,20 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
         android:src="@drawable/ic_favorite_false"
+        app:tint="@color/white"
         app:backgroundTint="@color/yellow"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="end|bottom|right"
-        app:maxImageSize="28dp" />
+        app:maxImageSize="28dp"
+        android:contentDescription="@string/desc_image_highlight" />
+
+    <ProgressBar
+        android:id="@+id/detail_movie_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:theme="@style/progressBarRed"
+        android:layout_gravity="center"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

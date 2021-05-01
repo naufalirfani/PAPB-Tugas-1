@@ -6,17 +6,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatDelegate
-import kotlinx.android.synthetic.main.activity_screen.*
+import com.team8.moviecatalog.databinding.ActivityScreenBinding
 
 class ScreenActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_screen)
+        binding = ActivityScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
         val version = "Version ${BuildConfig.VERSION_NAME}"
-        tv_screen_version.text = version
+        binding.tvScreenVersion.text = version
 
         val settingActivity = SettingActivity()
         if(settingActivity.getDefaults("isDarkMode", this) == true)
