@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
@@ -27,6 +28,7 @@ import com.team8.moviecatalog.models.movie.ResultItem
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.modelmapper.ModelMapper
+import java.net.URL
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -132,12 +134,15 @@ class DetailActivity : AppCompatActivity() {
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingNotificationIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        val url = URL(movieFavorite.thumbnail)
+        val icon = BitmapFactory.decodeStream(url.openConnection().getInputStream())
         val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_movie_logo)
-                .setContentTitle(title)
-                .setContentText(message)
+                .setLargeIcon(icon)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(message))
                 .setColor(ContextCompat.getColor(applicationContext, android.R.color.transparent))
+//                .setStyle(NotificationCompat.BigPictureStyle().bigPicture(icon))
                 .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
                 .setSound(alarmSound)
                 .setContentIntent(pendingNotificationIntent)

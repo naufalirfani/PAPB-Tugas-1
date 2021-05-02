@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
         else{
             this.doubleBackToExitPressedOnce = true
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.press_again_to_exit), Toast.LENGTH_SHORT).show()
         }
 
         val handler = Handler()
