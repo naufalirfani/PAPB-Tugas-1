@@ -1,5 +1,6 @@
 package com.team8.moviecatalog.ui.movie
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -40,9 +41,6 @@ class MovieFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_movie, container, false)
-        root.btn_setting.setOnClickListener {
-            Toast.makeText(context, "dasdsa", Toast.LENGTH_SHORT).show()
-        }
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         mShimmerViewContainer = root.findViewById(R.id.shimmer_view_container)
         mShimmerViewContainer.startShimmerAnimation()
@@ -113,7 +111,8 @@ class MovieFragment : Fragment() {
 
     private fun setGenre(){
         movie_content_rv.setHasFixedSize(true)
-        genreAdapter = GenreAdapter()
+        val context: Context = requireContext()
+        genreAdapter = GenreAdapter(context)
         genreAdapter.notifyDataSetChanged()
         movie_content_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         movie_content_rv.adapter = genreAdapter

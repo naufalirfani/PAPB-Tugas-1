@@ -29,18 +29,18 @@
 
         <TextView
             android:id="@+id/tv_detail_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:maxLines="3"
-            android:textColor="#000"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@string/movie_title"
+            android:textColor="?colorSecondary"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/img_detail_poster"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img_detail_poster"
-            app:layout_constraintTop_toTopOf="@id/img_detail_poster"
-            tools:text="Data Name" />
+            app:layout_constraintTop_toTopOf="@id/img_detail_poster" />
 
         <TextView
             android:id="@+id/lb_desc"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/movie_description"
-            android:textColor="@android:color/black"
+            android:textColor="?colorSecondary"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,7 +65,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lb_desc"
-            tools:text="This is Moview" />
+            android:textColor="?colorSecondary"
+            tools:text="This is Movie" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

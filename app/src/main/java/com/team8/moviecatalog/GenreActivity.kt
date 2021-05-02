@@ -6,7 +6,6 @@ import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.ViewModelProvider
@@ -118,7 +117,7 @@ class GenreActivity : AppCompatActivity() {
         movieClient.getService().getMovieNewUpload(currentPage)
                 .enqueue(object : Callback<Movie> {
                     override fun onFailure(call: Call<Movie>, t: Throwable) {
-                        Log.i("Errort", t.message.toString())
+                        Log.i("Error", t.message.toString())
                     }
 
                     override fun onResponse(call: Call<Movie>, response: Response<Movie>) {

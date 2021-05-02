@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Movie Catalog</string>
+    <string name="favorite_viewpager">Favorit ViewPager</string>
+    <string name="title_movie">Film</string>
+    <string name="title_anime">Anime</string>
+    <string name="title_favorite">Favorit</string>
+
+    <!--Empty States-->
+    <string name="empty_state_title_no_conn">Tidak ada koneksi internet</string>
+    <string name="empty_state_title_no_favorite_item">Belum ada favorit.</string>
+    <string name="empty_state_desc_no_favorite_item_movie">Anda tidak memiliki daftar film favorit</string>
+    <string name="empty_state_desc_no_favorite_item_anime">Anda tidak memiliki daftar anime favorit</string>
+
+    <string name="desc_image_highlight">Image Highlight</string>
+    <string name="connection_failure">Koneksi bermasalah</string>
+    <string name="title_image_slider">Image Slider</string>
+    <string name="trailer">Trailer</string>
+    <string name="genre">Genre</string>
+    <string name="enable_dark_mode">Aktifkan mode gelap</string>
+    <string name="select_language">Pilih bahasa</string>
+    <string name="setting">Pengaturan</string>
+    <string name="title_movie_image">Gambar film</string>
+    <string name="search_movie">Cari Film</string>
+    <string name="nothing_found">Tidak ada yang ditemukan</string>
+    <string name="movie_description">Deskripsi film</string>
+    <string name="movie_title">Judul film</string>
+    <string name="delete_movie">Hapus film</string>
+    <string name="delete_movie_msg">Anda yakin ingin menghapus <b>%1$s</b> dari favorit?</string>
+    <string name="notification_msg"><b>%1$s</b> telah ditambahkan ke favorit</string>
+    <string name="delete_from_favorite">Dihapus dari favorit</string>
+    <string name="added_to_favorite">Ditambahkan ke favorit</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="action">Aksi</string>
+    <string name="adventure">Petualangan</string>
+    <string name="animation">Animasi</string>
+    <string name="comedy">Komedi</string>
+    <string name="drama">Drama</string>
+    <string name="fantasy">Fantasi</string>
+    <string name="horror">Horor</string>
+    <string name="romance">Percintaan</string>
+    <string name="scifi">Sci-Fi</string>
+    <string name="thriller">Thriller</string>
+    <string name="western">Barat</string>
+    <string name="country">Negara</string>
+    <string name="version">Versi</string>
+    <string name="press_again_to_exit">Tekan lagi untuk keluar</string>
+</resources>

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
@@ -23,7 +22,6 @@ import com.team8.moviecatalog.databinding.ActivitySearchBinding
 import com.team8.moviecatalog.models.movie.Movie
 import com.team8.moviecatalog.models.movie.ResultItem
 import com.team8.moviecatalog.ui.movie.MovieViewModel
-import kotlinx.android.synthetic.main.activity_search.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -157,7 +155,9 @@ class SearchActivity : AppCompatActivity() {
 
             if(arrayMovieBySearch.isNotEmpty()){
                 binding.searchRv.visibility =View.VISIBLE
-                search_empty_state.visibility = View.GONE
+                binding.searchEmptyState.imgEmptyState.visibility = View.GONE
+                binding.searchEmptyState.titleEmptyState.visibility = View.GONE
+                binding.searchEmptyState.descEmptyState.visibility = View.GONE
                 movieByAdapter.setData(arrayMovieBySearch)
                 binding.searchProgressBar.visibility = View.INVISIBLE
             }
@@ -202,7 +202,9 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun enableEmptyState(){
-        search_empty_state.visibility = View.VISIBLE
+        binding.searchEmptyState.imgEmptyState.visibility = View.VISIBLE
+        binding.searchEmptyState.titleEmptyState.visibility = View.VISIBLE
+        binding.searchEmptyState.descEmptyState.visibility = View.VISIBLE
         binding.searchEmptyState.imgEmptyState.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_seacrh_404, null))
         binding.searchEmptyState.titleEmptyState.text = getString(R.string.nothing_found)
         binding.searchEmptyState.descEmptyState.text = ""

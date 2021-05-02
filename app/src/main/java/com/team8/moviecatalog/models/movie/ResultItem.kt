@@ -30,4 +30,4 @@ data class ResultItem(
 
 	@field:SerializedName("quality")
 	val quality: String? = null
-):Parcelable
+): Parcelable

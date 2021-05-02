@@ -1,16 +1,19 @@
 package com.team8.moviecatalog
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.navigation.*
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.team8.moviecatalog.databinding.ActivityMainBinding
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -36,6 +39,12 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val settingActivity = SettingActivity()
+        changeLanguage(settingActivity.getDefaultLanguage("country_code", this).toString())
+
+        val notification = (intent.getStringExtra("notificationMessage"))
+        if(!notification.isNullOrEmpty())
+            navController.navigate(R.id.navigation_favorite)
     }
 
     override fun onBackPressed() {
@@ -45,12 +54,19 @@ class MainActivity : AppCompatActivity() {
         }
         else{
             this.doubleBackToExitPressedOnce = true
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.press_again_to_exit), Toast.LENGTH_SHORT).show()
         }
 
         val handler = Handler()
         handler.postDelayed(Runnable { // Do something after 5s = 5000ms
             doubleBackToExitPressedOnce = false
         }, 1500)
+    }
+
+    fun changeLanguage(code: String) {
+        val config = resources.configuration
+        val locale = Locale(code)
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }
