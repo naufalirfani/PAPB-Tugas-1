@@ -26,6 +26,7 @@
     <string name="movie_title">Movie Title</string>
     <string name="delete_movie">Delete Movie</string>
     <string name="delete_movie_msg">Are you sure want to delete <b>%1$s</b> from favorites?</string>
+    <string name="notification_msg"><b>%1$s</b> has been added to favorites</string>
     <string name="delete_from_favorite">Removed from favorites</string>
     <string name="added_to_favorite">Added to favorites</string>
     <string name="yes">Yes</string>

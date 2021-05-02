@@ -1,12 +1,20 @@
 package com.team8.moviecatalog
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
@@ -106,8 +114,53 @@ class DetailActivity : AppCompatActivity() {
                 Toast.makeText(this, resources.getString(R.string.added_to_favorite), Toast.LENGTH_SHORT).show()
                 GlobalScope.launch {
                     db.movieDao().insertMovie(movieFavorite)
+                    val msg = String.format(resources.getString(R.string.notification_msg, movieFavorite.title))
+                    val notifId = 2
+                    showNotification(resources.getString(R.string.added_to_favorite), msg, notifId)
                 }
             }
         }
+    }
+
+    private fun showNotification(title: String, message: String, notifId: Int) {
+
+        val CHANNEL_ID = "Channel_01"
+        val CHANNEL_NAME = "Movie channel"
+
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.putExtra("notificationMessage", "notification")
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingNotificationIntent = PendingIntent.getActivity(applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_movie_logo)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setColor(ContextCompat.getColor(applicationContext, android.R.color.transparent))
+                .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
+                .setSound(alarmSound)
+                .setContentIntent(pendingNotificationIntent)
+                .setAutoCancel(true)
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            val channel = NotificationChannel(CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT)
+
+            channel.enableVibration(true)
+            channel.vibrationPattern = longArrayOf(1000, 1000, 1000, 1000, 1000)
+
+            builder.setChannelId(CHANNEL_ID)
+
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = builder.build()
+
+        notificationManager.notify(notifId, notification)
+
     }
 }

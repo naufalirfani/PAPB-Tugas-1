@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "MOVIE_BASE_URL", '"https://movie-katalog.herokuapp.com/"')
+        buildConfigField("String", "MOVIE_BASE_URL", '"https://api-lk21.herokuapp.com/"')
     }
 
     buildTypes {
