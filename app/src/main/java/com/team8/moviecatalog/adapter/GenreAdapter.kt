@@ -76,6 +76,7 @@ class GenreAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHol
         movieVH.mGenreBtn.setOnClickListener {
             val genreIntent = Intent(holder.itemView.context, GenreActivity::class.java)
             genreIntent.putExtra("genre", arrayGenreTextEng[position])
+            genreIntent.putExtra("genreTitle", genreText)
             holder.itemView.context.startActivity(genreIntent)
         }
 
