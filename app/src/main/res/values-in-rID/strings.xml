@@ -45,4 +45,6 @@
     <string name="country">Negara</string>
     <string name="version">Versi</string>
     <string name="press_again_to_exit">Tekan lagi untuk keluar</string>
+    <string name="newly_releases">Rilis Terbaru</string>
+    <string name="for_you">Rekomendasi Untukmu</string>
 </resources>

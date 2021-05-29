@@ -45,4 +45,6 @@
     <string name="country">Country</string>
     <string name="version">Version</string>
     <string name="press_again_to_exit">Press again to exit</string>
+    <string name="newly_releases">Newly Releases</string>
+    <string name="for_you">For You</string>
 </resources>

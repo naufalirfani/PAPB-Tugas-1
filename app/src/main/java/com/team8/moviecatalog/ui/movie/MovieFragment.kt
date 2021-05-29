@@ -18,6 +18,8 @@ import com.team8.moviecatalog.R
 import com.team8.moviecatalog.SearchActivity
 import com.team8.moviecatalog.SettingActivity
 import com.team8.moviecatalog.adapter.GenreAdapter
+import com.team8.moviecatalog.adapter.MovieAdapter
+import com.team8.moviecatalog.adapter.MovieByAdapter
 import com.team8.moviecatalog.adapter.SliderAdapter
 import com.team8.moviecatalog.models.movie.ResultItem
 import kotlinx.android.synthetic.main.fragment_movie.*
@@ -30,10 +32,13 @@ class MovieFragment : Fragment() {
 
     private lateinit var movieViewModel: MovieViewModel
     private var arraySlider = ArrayList<ResultItem?>()
+    private var arrayMovie = ArrayList<ResultItem?>()
+    private var arrayMovie2 = ArrayList<ResultItem?>()
     private var arrayMovieNewUpload = ArrayList<ResultItem?>()
     private var arrayMovieTitle = ArrayList<String>()
     private var listRandom: MutableList<Int> = mutableListOf()
     private lateinit var genreAdapter: GenreAdapter
+    private lateinit var rvAdapter: MovieAdapter
     private lateinit var mShimmerViewContainer: ShimmerFrameLayout
 
     override fun onCreateView(
@@ -50,6 +55,9 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        tv_for_u.visibility = View.GONE
+        tv_new_release.visibility = View.GONE
+
         movieViewModel.getMovieNewUpload(1).observe({ lifecycle }, {
             it?.result?.forEach { resultItem ->
                 arrayMovieNewUpload.add(resultItem)
@@ -57,6 +65,10 @@ class MovieFragment : Fragment() {
             }
             if(arrayMovieNewUpload.isNotEmpty()){
                 setSlider(arrayMovieNewUpload)
+                setRecycleview(arrayMovieNewUpload)
+
+                tv_for_u.visibility = View.VISIBLE
+                tv_new_release.visibility = View.VISIBLE
             }
         })
 
@@ -116,5 +128,49 @@ class MovieFragment : Fragment() {
         genreAdapter.notifyDataSetChanged()
         movie_content_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         movie_content_rv.adapter = genreAdapter
+    }
+
+    private fun setRecycleview(listNew: ArrayList<ResultItem?>){
+        // set for u
+        listRandom.clear()
+        while (listRandom.size < 10){
+            val angka = Random.nextInt(0, listNew.size)
+
+            if(listRandom.contains(angka))
+                continue
+
+            listRandom.add(angka)
+
+            if (listRandom.size == 10)
+                break
+        }
+
+        listRandom.forEach{
+            arrayMovie.add(listNew[it])
+        }
+
+        movie_for_u_rv.setHasFixedSize(true)
+        val context: Context = requireContext()
+        rvAdapter = MovieAdapter(context)
+        rvAdapter.notifyDataSetChanged()
+        rvAdapter.setData(arrayMovie)
+        movie_for_u_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        movie_for_u_rv.adapter = rvAdapter
+
+        // set new release
+        var i = 0
+        while (i < 10){
+            arrayMovie2.add(listNew[i])
+            if (i == 10)
+                break
+            i++
+        }
+
+        movie_new_rv.setHasFixedSize(true)
+        rvAdapter = MovieAdapter(context)
+        rvAdapter.notifyDataSetChanged()
+        rvAdapter.setData(arrayMovie2)
+        movie_new_rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        movie_new_rv.adapter = rvAdapter
     }
 }

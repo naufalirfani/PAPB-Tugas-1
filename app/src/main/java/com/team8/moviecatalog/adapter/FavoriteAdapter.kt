@@ -16,9 +16,12 @@ import com.bumptech.glide.Glide
 import com.makeramen.roundedimageview.RoundedImageView
 import com.team8.moviecatalog.DetailActivity
 import com.team8.moviecatalog.R
+import com.team8.moviecatalog.TrailerActivity
 import com.team8.moviecatalog.database.movie.AppMovieDatabase
 import com.team8.moviecatalog.database.movie.MovieEntity
 import com.team8.moviecatalog.models.movie.ResultItem
+import kotlinx.android.synthetic.main.image_slider_layout_item.view.*
+import kotlinx.android.synthetic.main.item_row_favorite_data.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -66,6 +69,13 @@ open class FavoriteAdapter(private val context: Context, private val db: AppMovi
             movieFav.title.toString(),
             movieFav.quality.toString()
         )
+
+        val videoId = movieFav.trailer?.replace("https://www.youtube.com/watch?v=", "")
+        holder.itemView.btn_favorite_trailer.setOnClickListener {
+            val intent = Intent(context, TrailerActivity::class.java)
+            intent.putExtra("videoId", videoId)
+            holder.itemView.context.startActivity(intent)
+        }
 
         holder.itemView.setOnClickListener {
             val detailIntent = Intent(holder.itemView.context, DetailActivity::class.java)

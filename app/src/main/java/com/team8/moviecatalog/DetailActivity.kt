@@ -25,6 +25,7 @@ import com.team8.moviecatalog.database.movie.AppMovieDatabase
 import com.team8.moviecatalog.database.movie.MovieEntity
 import com.team8.moviecatalog.databinding.ActivityDetailBinding
 import com.team8.moviecatalog.models.movie.ResultItem
+import kotlinx.android.synthetic.main.image_slider_layout_item.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.modelmapper.ModelMapper
@@ -80,6 +81,13 @@ class DetailActivity : AppCompatActivity() {
                         .override(Target.SIZE_ORIGINAL))
             .fitCenter()
             .into(binding.detailContent.imgDetailPoster)
+
+        val videoId = movie?.trailer?.replace("https://www.youtube.com/watch?v=", "")
+        binding.detailContent.btnDetailTrailer.setOnClickListener {
+            val intent = Intent(this, TrailerActivity::class.java)
+            intent.putExtra("videoId", videoId)
+            startActivity(intent)
+        }
     }
 
     private fun loadIfFavorite(){

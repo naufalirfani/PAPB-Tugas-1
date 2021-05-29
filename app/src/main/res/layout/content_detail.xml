@@ -38,9 +38,30 @@
             android:textColor="?colorSecondary"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/img_detail_poster"
+            app:layout_constraintBottom_toTopOf="@id/btn_detail_trailer"
             app:layout_constraintStart_toEndOf="@id/img_detail_poster"
             app:layout_constraintTop_toTopOf="@id/img_detail_poster" />
+
+        <Button
+            android:id="@+id/btn_detail_trailer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pt_sans_bold"
+            android:text="@string/trailer"
+            android:textColor="@color/white"
+            android:clickable="false"
+            android:backgroundTint="@color/red"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_movie_trailer"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_margin="14dp"
+            android:layout_gravity="bottom|center"
+            app:cornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/img_detail_poster"
+            app:layout_constraintStart_toEndOf="@id/img_detail_poster"
+            app:layout_constraintTop_toBottomOf="@id/tv_detail_name" />
 
         <TextView
             android:id="@+id/lb_desc"

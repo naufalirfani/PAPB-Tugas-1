@@ -43,9 +43,7 @@ class SettingActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener 
             else
                 setDefaults("isDarkMode", false, this)
 
-            val screenIntent = Intent(this, ScreenActivity::class.java)
-            startActivity(screenIntent)
-            finish()
+            recreate()
         }
         themeSetting(getString(R.string.setting), this, supportActionBar, resources)
 

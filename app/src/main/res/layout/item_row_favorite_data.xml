@@ -56,6 +56,26 @@
             app:layout_constraintEnd_toEndOf="@id/cons_item"
             app:layout_constraintTop_toBottomOf="@+id/tv_favorite_data_title"
             tools:text="@string/movie_description" />
+
+        <Button
+            android:id="@+id/btn_favorite_trailer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pt_sans_bold"
+            android:text="@string/trailer"
+            android:textColor="@color/white"
+            android:clickable="false"
+            android:backgroundTint="@color/red"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_movie_trailer"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:layout_margin="14dp"
+            android:layout_gravity="bottom|center"
+            app:cornerRadius="12dp"
+            app:layout_constraintStart_toEndOf="@id/img_favorite_data"
+            app:layout_constraintTop_toBottomOf="@+id/tv_favorite_data_desc"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
