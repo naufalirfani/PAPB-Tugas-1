@@ -6,23 +6,83 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.anime.AnimeFragment">
 
+    <LinearLayout
+        android:id="@+id/linear_anime"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:elevation="8dp"
+        android:background="?colorOnPrimary"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/tv_anime_bar_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingHorizontal="10dp"
+            android:layout_margin="10dp"
+            android:textColor="?colorSecondary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="@string/movie_title" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_anime_search"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:foreground="@drawable/ic_search_white"
+            android:foregroundGravity="center"
+            app:tint="@color/white"
+            app:backgroundTint="@color/red"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="@string/desc_image_highlight" />
+    </LinearLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/anime_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintTop_toBottomOf="@id/linear_anime"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_anime_search"
+    <ProgressBar
+        android:id="@+id/anime_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:src="@drawable/ic_search_white"
-        app:tint="@color/white"
-        app:backgroundTint="@color/red"
-        app:layout_anchorGravity="end|bottom|right"
-        app:maxImageSize="28dp"
-        android:contentDescription="@string/desc_image_highlight"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:theme="@style/progressBarRed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|end">
+        <ImageButton
+            android:id="@+id/btn_back_to_top"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_circle"
+            android:src="@drawable/ic_arrow_upward_white_24dp"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="15sp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

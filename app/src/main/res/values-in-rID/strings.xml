@@ -51,4 +51,6 @@
     <string name="processing_images_succes">Gambar berhasil diproses</string>
     <string name="processing_images_failed">Gambar gagal diproses</string>
     <string name="select_image">Silahkan pilih foto atau gambar.</string>
+    <string name="anime_list">Daftar Anime</string>
+    <string name="search_anime">Cari Anime</string>
 </resources>

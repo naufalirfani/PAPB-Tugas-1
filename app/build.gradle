@@ -20,6 +20,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "MOVIE_BASE_URL", '"https://api-lk21.herokuapp.com/"')
+        buildConfigField("String", "ANIME_BASE_URL", '"https://api.jikan.moe/"')
     }
 
     buildTypes {
@@ -118,5 +119,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation 'com.google.firebase:firebase-firestore:17.1.2'
     implementation 'com.google.firebase:firebase-messaging:10.2.6'
+
+    // rating bar
+    implementation 'com.github.FlyingPumba:SimpleRatingBar:v0.1.5'
 
 }

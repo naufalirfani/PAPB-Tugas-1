@@ -51,4 +51,6 @@
     <string name="processing_images_succes">Image processed successfully</string>
     <string name="processing_images_failed">Image failed to process</string>
     <string name="select_image">Please select a photo or image.</string>
+    <string name="anime_list">Anime List</string>
+    <string name="search_anime">Search Anime</string>
 </resources>
