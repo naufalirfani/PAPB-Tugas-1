@@ -10,27 +10,24 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.makeramen.roundedimageview.RoundedImageView
 import com.team8.moviecatalog.DetailActivity
 import com.team8.moviecatalog.R
 import com.team8.moviecatalog.TrailerActivity
-import com.team8.moviecatalog.database.movie.AppMovieDatabase
+import com.team8.moviecatalog.database.AppDatabase
 import com.team8.moviecatalog.database.movie.MovieEntity
 import com.team8.moviecatalog.models.movie.ResultItem
-import kotlinx.android.synthetic.main.image_slider_layout_item.view.*
 import kotlinx.android.synthetic.main.item_row_favorite_data.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-open class FavoriteAdapter(private val context: Context, private val db: AppMovieDatabase) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+open class FavoriteMovieAdapter(private val context: Context, private val db: AppDatabase) : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
 
-    private var mData: List<MovieEntity> = mutableListOf()
-    fun setData(items: List<MovieEntity>) {
-        mData = listOf()
+    private var mData = ArrayList<MovieEntity>()
+    fun setData(items: ArrayList<MovieEntity>) {
         mData = items
         notifyDataSetChanged()
     }
@@ -97,6 +94,11 @@ open class FavoriteAdapter(private val context: Context, private val db: AppMovi
             ) { dialog, _ -> // Do nothing but close the dialog
                 GlobalScope.launch {
                     db.movieDao().deleteMovie(movieFav.title.toString())
+                }
+                if(mData.size == 1){
+                    mData.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, mData.size)
                 }
                 Toast.makeText(context, context.getString(R.string.delete_from_favorite), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()

@@ -3,8 +3,6 @@ package com.team8.moviecatalog
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -15,17 +13,18 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.team8.moviecatalog.adapter.MovieByAdapter
 import com.team8.moviecatalog.api.movie.MovieClient
 import com.team8.moviecatalog.databinding.ActivitySearchBinding
+import com.team8.moviecatalog.models.anime.AnimeResult
 import com.team8.moviecatalog.models.movie.Movie
 import com.team8.moviecatalog.models.movie.ResultItem
 import com.team8.moviecatalog.ui.movie.MovieViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.ArrayList
+import java.util.logging.Logger
+import java.util.ArrayList
 
 @SuppressLint("ClickableViewAccessibility")
 class SearchActivity : AppCompatActivity() {
@@ -33,7 +32,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var movieByAdapter: MovieByAdapter
     private lateinit var movieViewModel: MovieViewModel
-    private var arrayMovieBySearch = ArrayList<ResultItem?>()
     private var arrayMovieBySearch2 = ArrayList<ResultItem?>()
     private var currentPage = 1
     private var activity: String? = null
@@ -60,6 +58,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         searchEvent()
+        enableEmptyState()
     }
 
     override fun onResume() {
@@ -71,8 +70,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchEvent(){
-        initRecycleView()
-
+        binding.searchProgressBar.visibility = View.GONE
         binding.etSearch.isCursorVisible = true
         binding.etSearch.requestFocus()
         binding.etSearch.addTextChangedListener {
@@ -113,30 +111,33 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun initRecycleView(){
+    private fun setRecycleView(listMovie: ArrayList<ResultItem?>){
         binding.searchProgressBar.visibility = View.GONE
+        movieByAdapter = MovieByAdapter(this)
         val gridLayoutManager = GridLayoutManager(this, 3)
         binding.searchRv.layoutManager = gridLayoutManager
-        movieByAdapter = MovieByAdapter(this)
+        movieByAdapter.setData(listMovie)
         binding.searchRv.adapter = movieByAdapter
 
-        binding.searchRv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val visibleItemCount = gridLayoutManager.childCount
-                val totalItemCount = gridLayoutManager.itemCount
-                val firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition()
-
-                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        loadNextPage(binding.etSearch.text.toString())
-                    }, 500)
-                    binding.searchProgressBar.visibility = View.VISIBLE
-                }
-                else{
-                    binding.searchProgressBar.visibility = View.GONE
-                }
-            }
-        })
+//        binding.searchRv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                val visibleItemCount = gridLayoutManager.childCount
+//                val totalItemCount = gridLayoutManager.itemCount
+//                val firstVisibleItemPosition = gridLayoutManager.findFirstVisibleItemPosition()
+//
+//                if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0) {
+//                    if(totalItemCount > 9){
+//                        Handler(Looper.getMainLooper()).postDelayed({
+//                            loadNextPage(binding.etSearch.text.toString())
+//                        }, 500)
+//                        binding.searchProgressBar.visibility = View.VISIBLE
+//                    }
+//                }
+//                else{
+//                    binding.searchProgressBar.visibility = View.GONE
+//                }
+//            }
+//        })
 
         binding.searchRv.setOnTouchListener { _, _ ->
             binding.etSearch.isCursorVisible = false
@@ -148,25 +149,32 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun doSearch(query: String){
+        disableEmptyState()
         binding.searchProgressBar.visibility = View.VISIBLE
-        movieViewModel.getMovieBySearch(query, currentPage).observe({ lifecycle }, {
+        var arrayMovieBySearch: ArrayList<ResultItem?>
+        movieClient.getService().getMovieBySearch(query, currentPage)
+            .enqueue(object : Callback<Movie> {
+                override fun onFailure(call: Call<Movie>, t: Throwable) {
+                    Logger.getLogger(t.message.toString())
+                }
 
-            arrayMovieBySearch = it?.result as ArrayList<ResultItem?>
+                override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
 
-            if(arrayMovieBySearch.isNotEmpty()){
-                binding.searchRv.visibility =View.VISIBLE
-                binding.searchEmptyState.imgEmptyState.visibility = View.GONE
-                binding.searchEmptyState.titleEmptyState.visibility = View.GONE
-                binding.searchEmptyState.descEmptyState.visibility = View.GONE
-                movieByAdapter.setData(arrayMovieBySearch)
-                binding.searchProgressBar.visibility = View.INVISIBLE
-            }
-            else{
-                binding.searchRv.visibility = View.GONE
-                enableEmptyState()
-                binding.searchProgressBar.visibility = View.INVISIBLE
-            }
-        })
+                    if(response.body()?.result?.isNotEmpty()!!){
+                        arrayMovieBySearch = response.body()?.result as ArrayList<ResultItem?>
+                        disableEmptyState()
+                        setRecycleView(arrayMovieBySearch)
+                        binding.searchRv.visibility = View.VISIBLE
+                        binding.searchProgressBar.visibility = View.INVISIBLE
+                    }
+                    else{
+                        binding.searchRv.visibility = View.GONE
+                        enableEmptyState()
+                        binding.searchProgressBar.visibility = View.INVISIBLE
+                    }
+                }
+
+            })
     }
 
     private fun loadNextPage(query: String){
@@ -205,6 +213,15 @@ class SearchActivity : AppCompatActivity() {
         binding.searchEmptyState.imgEmptyState.visibility = View.VISIBLE
         binding.searchEmptyState.titleEmptyState.visibility = View.VISIBLE
         binding.searchEmptyState.descEmptyState.visibility = View.VISIBLE
+        binding.searchEmptyState.imgEmptyState.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_seacrh_404, null))
+        binding.searchEmptyState.titleEmptyState.text = getString(R.string.nothing_found)
+        binding.searchEmptyState.descEmptyState.text = ""
+    }
+
+    private fun disableEmptyState(){
+        binding.searchEmptyState.imgEmptyState.visibility = View.GONE
+        binding.searchEmptyState.titleEmptyState.visibility = View.GONE
+        binding.searchEmptyState.descEmptyState.visibility = View.GONE
         binding.searchEmptyState.imgEmptyState.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_seacrh_404, null))
         binding.searchEmptyState.titleEmptyState.text = getString(R.string.nothing_found)
         binding.searchEmptyState.descEmptyState.text = ""

@@ -22,9 +22,10 @@
     <string name="title_movie_image">Gambar film</string>
     <string name="search_movie">Cari Film</string>
     <string name="nothing_found">Tidak ada yang ditemukan</string>
-    <string name="movie_description">Deskripsi film</string>
+    <string name="movie_description">Ringkasan</string>
     <string name="movie_title">Judul film</string>
     <string name="delete_movie">Hapus film</string>
+    <string name="delete_anime">Hapus Anime</string>
     <string name="delete_movie_msg">Anda yakin ingin menghapus <b>%1$s</b> dari favorit?</string>
     <string name="notification_msg"><b>%1$s</b> telah ditambahkan ke favorit</string>
     <string name="delete_from_favorite">Dihapus dari favorit</string>

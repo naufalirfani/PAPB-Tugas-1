@@ -1,6 +1,7 @@
 package com.team8.moviecatalog
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,40 +11,58 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.provider.MediaStore
+import android.util.Base64
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.google.firebase.database.DatabaseReference
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isEmpty
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.team8.moviecatalog.adapter.AnimeAdapter
+import com.team8.moviecatalog.api.anime.AnimeClient
+import com.team8.moviecatalog.api.anime.SearchAnimeClient
 import com.team8.moviecatalog.databinding.ActivitySearchAnimeBinding
+import com.team8.moviecatalog.models.ImageBody
+import com.team8.moviecatalog.models.anime.*
+import com.team8.moviecatalog.models.movie.ResultItem
+import com.team8.moviecatalog.ui.anime.AnimeViewModel
+import kotlinx.android.synthetic.main.fragment_anime.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.jvm.Throws
+import java.util.logging.Logger
 
 class SearchAnimeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchAnimeBinding
     private val ALLOW_KEY = "ALLOWED"
     private val STORAGE_PREF = "storage_pref"
-    private lateinit var firebaseDatabase: FirebaseDatabase
-    private var storageReference: StorageReference? = null
     private var filePath: Uri? = null
-    private var photo: Bitmap? = null
     private var currentPhotoPath: String = "";
     private val CAMERA_REQUEST = 100
     private val GALLERY_REQUEST = 101
@@ -53,6 +72,10 @@ class SearchAnimeActivity : AppCompatActivity() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
+    private lateinit var animeViewModel: AnimeViewModel
+    private var arrayDocs = ArrayList<DocsItem?>()
+    private lateinit var animeAdapter: AnimeAdapter
+    private val animeClient: AnimeClient = AnimeClient()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +83,17 @@ class SearchAnimeActivity : AppCompatActivity() {
         binding= ActivitySearchAnimeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        animeViewModel = ViewModelProvider(this).get(AnimeViewModel::class.java)
+
         supportActionBar?.hide()
 
         permission()
+
+        searchEvent()
+
+        enableEmptyState()
+
+        animeAdapter = AnimeAdapter(this)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
@@ -98,19 +129,31 @@ class SearchAnimeActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             CAMERA_REQUEST -> if (resultCode == Activity.RESULT_OK) {
                 val imgFile = File(currentPhotoPath)
                 filePath = Uri.fromFile(imgFile)
-                uploadImage()
+                val source = filePath?.let { ImageDecoder.createSource(this.contentResolver, it) }
+                val bitmap = source?.let { ImageDecoder.decodeBitmap(it) }
+                getSearchResult(bitmap?.let { encodeTobase64(it).toString() }.toString())
             }
             GALLERY_REQUEST -> if (resultCode == Activity.RESULT_OK) {
                 filePath = data!!.data
-                uploadImage()
+                val source = filePath?.let { ImageDecoder.createSource(this.contentResolver, it) }
+                val bitmap = source?.let { ImageDecoder.decodeBitmap(it) }
+                getSearchResult(bitmap?.let { encodeTobase64(it).toString() }.toString())
             }
         }
+    }
+
+    fun encodeTobase64(image: Bitmap): String? {
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val b = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
     }
 
     class Item(val text: String, val icon: Int) {
@@ -262,35 +305,188 @@ class SearchAnimeActivity : AppCompatActivity() {
         return myPrefs.getBoolean(key, false)
     }
 
-    private fun uploadImage(){
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        storageReference = FirebaseStorage.getInstance().reference
-        val progressDialog = Dialog(this)
-        progressDialog.setContentView(R.layout.dialoguploadphoto)
-        progressDialog.setCancelable(true)
-        progressDialog.show()
-        val progressbarUpload: ProgressBar = progressDialog.findViewById(R.id.setting_progress_bar)
+    private fun getSearchResult(base64: String){
+        disableEmptyState()
+        binding.searchAnimeProgressBar.visibility = View.VISIBLE
 
-        if(filePath != null){
-            val fileNameList = filePath.toString().split("/")
-            val fileName = fileNameList[fileNameList.size - 1]
-            val ref = storageReference?.child("imageAnime/${fileName}")
-            ref?.putFile(filePath!!)?.addOnSuccessListener { taskSnapshot ->
-                ref.downloadUrl.addOnSuccessListener {
-                    val url = it.toString()
-                    Toast.makeText(this, url, Toast.LENGTH_LONG).show()
-                }.addOnFailureListener {}
-                progressDialog.dismiss()
-                Toast.makeText(this, resources.getString(R.string.processing_images_succes), Toast.LENGTH_LONG).show()
-            }?.addOnFailureListener { e ->
-                progressDialog.dismiss()
-                Toast.makeText(this, resources.getString(R.string.processing_images_failed) + e.message, Toast.LENGTH_LONG).show()
-            }?.addOnProgressListener { taskSnapshot ->
-                val progress = 100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount
-                progressbarUpload.progress = progress.toInt()
+        animeViewModel.searchAnime(base64).observe({lifecycle}, {
+            arrayDocs = it?.docs as ArrayList<DocsItem?>
+
+            if(arrayDocs.isNotEmpty()){
+                val arrayMalId = ArrayList<Int?>()
+                arrayDocs.forEach{arrayMalId.add(it?.malId)}
+                val listMalId =  arrayMalId.distinct()
+                val listAnimeDetail = ArrayList<AnimeResult?>()
+                var i = 0
+                for(malId in listMalId){
+                    animeViewModel.getByid("/v3/anime/$malId").observe({lifecycle}, {
+                        val animeDetail = it
+
+                        if(animeDetail != null){
+                            i += 1
+                            if(i % listMalId.size == 0){
+                                val animeResult = AnimeResult(
+                                    null,
+                                    animeDetail.imageUrl,
+                                    animeDetail.malId,
+                                    animeDetail.synopsis,
+                                    animeDetail.title,
+                                    animeDetail.type,
+                                    animeDetail.url,
+                                    animeDetail.rating,
+                                    animeDetail.score,
+                                    animeDetail.members,
+                                    animeDetail.airing,
+                                    animeDetail.episodes,
+                                    null
+
+                                )
+                                listAnimeDetail.add(animeResult)
+                            }
+                            if(i == listMalId.size * listMalId.size){
+                                setRecycleView(listAnimeDetail)
+                                binding.searchRvAnime.visibility = View.VISIBLE
+                                binding.searchAnimeProgressBar.visibility = View.INVISIBLE
+                            }
+                        }
+                        else{
+                            i += 1
+                            binding.searchRvAnime.visibility = View.GONE
+                            enableEmptyState()
+                            binding.searchAnimeProgressBar.visibility = View.INVISIBLE
+                        }
+                    })
+                }
             }
-        }else{
-            Toast.makeText(this, resources.getString(R.string.select_image), Toast.LENGTH_LONG).show()
+            else{
+                binding.searchRvAnime.visibility = View.GONE
+                enableEmptyState()
+                binding.searchAnimeProgressBar.visibility = View.INVISIBLE
+            }
+        })
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun searchEvent(){
+
+        binding.etSearchAnime.isCursorVisible = true
+        binding.etSearchAnime.requestFocus()
+        binding.etSearchAnime.addTextChangedListener {
+            binding.etSearchAnime.isCursorVisible = true
+            binding.etSearchAnime.requestFocus()
+            setActiveBackground()
         }
+        binding.etSearchAnime.setOnTouchListener { _, _ ->
+            binding.etSearchAnime.isCursorVisible = true
+            binding.etSearchAnime.requestFocus()
+            setActiveBackground()
+            false
+        }
+
+        binding.etSearchAnime.setOnEditorActionListener { _, actionId, _ ->
+            return@setOnEditorActionListener when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    doSearch(binding.etSearchAnime.text.toString())
+                    binding.etSearchAnime.dismissDropDown()
+                    binding.etSearchAnime.isCursorVisible = false
+                    binding.etSearchAnime.background = ResourcesCompat.getDrawable(resources, R.drawable.edttext_style_grey, null)
+                    binding.btnSearch.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_search_grey, null))
+                    closeKeyBoard()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.btnSearch.setOnClickListener {
+            doSearch(binding.etSearchAnime.text.toString())
+            binding.etSearchAnime.dismissDropDown()
+            binding.etSearchAnime.isCursorVisible = false
+            binding.etSearchAnime.background = ResourcesCompat.getDrawable(resources, R.drawable.edttext_style_grey, null)
+            binding.btnSearch.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_search_grey, null))
+            closeKeyBoard()
+
+        }
+    }
+
+    private fun doSearch(query: String){
+        disableEmptyState()
+        binding.searchAnimeProgressBar.visibility = View.VISIBLE
+        val arrayAnime = ArrayList<AnimeResult?>()
+        animeClient.getService().getAnimeBySearch(query, "members", "desc", 1)
+            .enqueue(object : Callback<Anime> {
+                override fun onFailure(call: Call<Anime>, t: Throwable) {
+                    println(t.message)
+                }
+
+                override fun onResponse(call: Call<Anime>, response: Response<Anime>) {
+                    if(response.code() == 200){
+                        disableEmptyState()
+                        response.body()?.results?.forEach{anime ->
+                            arrayAnime.add(anime)
+                        }
+                        setRecycleView(arrayAnime)
+                        binding.searchRvAnime.visibility = View.VISIBLE
+                        binding.searchAnimeProgressBar.visibility = View.INVISIBLE
+                    }
+                    else{
+                        println("kosong")
+                        setRecycleView(arrayAnime)
+                        binding.searchRvAnime.visibility = View.INVISIBLE
+                        enableEmptyState()
+                        binding.searchAnimeProgressBar.visibility = View.INVISIBLE
+                    }
+
+                }
+
+            })
+    }
+
+    private fun setRecycleView(listAnime: ArrayList<AnimeResult?>){
+        binding.searchRvAnime.setHasFixedSize(true)
+        animeAdapter.setData(listAnime)
+        animeAdapter.notifyDataSetChanged()
+        binding.searchRvAnime.layoutManager = LinearLayoutManager(this)
+        binding.searchRvAnime.adapter = animeAdapter
+    }
+
+    private fun setActiveBackground(){
+        val settingActivity = SettingActivity()
+        if(settingActivity.getDefaults("isDarkMode", this) == true){
+            binding.etSearchAnime.background = ResourcesCompat.getDrawable(resources, R.drawable.edttext_style_white, null)
+            binding.btnSearch.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_search_white, null))
+        }
+        else{
+            binding.etSearchAnime.background = ResourcesCompat.getDrawable(resources, R.drawable.edttext_style_black, null)
+            binding.btnSearch.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_search_black, null))
+        }
+    }
+
+    private fun closeKeyBoard() {
+
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+
+        }
+    }
+
+    private fun enableEmptyState(){
+        binding.searchEmptyState.imgEmptyState.visibility = View.VISIBLE
+        binding.searchEmptyState.titleEmptyState.visibility = View.VISIBLE
+        binding.searchEmptyState.descEmptyState.visibility = View.VISIBLE
+        binding.searchEmptyState.imgEmptyState.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_seacrh_404, null))
+        binding.searchEmptyState.titleEmptyState.text = getString(R.string.nothing_found)
+        binding.searchEmptyState.descEmptyState.text = ""
+    }
+
+    private fun disableEmptyState(){
+        binding.searchEmptyState.imgEmptyState.visibility = View.GONE
+        binding.searchEmptyState.titleEmptyState.visibility = View.GONE
+        binding.searchEmptyState.descEmptyState.visibility = View.GONE
+        binding.searchEmptyState.imgEmptyState.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_seacrh_404, null))
+        binding.searchEmptyState.titleEmptyState.text = getString(R.string.nothing_found)
+        binding.searchEmptyState.descEmptyState.text = ""
     }
 }

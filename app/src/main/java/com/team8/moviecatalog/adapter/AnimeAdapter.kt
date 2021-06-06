@@ -1,5 +1,6 @@
 package com.team8.moviecatalog.adapter
 
+import android.R.attr.data
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import com.makeramen.roundedimageview.RoundedImageView
+import com.team8.moviecatalog.DetailActivity
 import com.team8.moviecatalog.R
 import com.team8.moviecatalog.models.anime.AnimeResult
 
@@ -23,8 +25,14 @@ class AnimeAdapter(private val context: Context) : RecyclerView.Adapter<Recycler
     fun setData(animeResults: ArrayList<AnimeResult?>) {
         this.animeResults = animeResults
         notifyDataSetChanged()
-        println(this.animeResults[5]?.title)
     }
+
+    fun clear() {
+        val size: Int = animeResults.size
+        animeResults.clear()
+        notifyItemRangeRemoved(0, size)
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): RecyclerView.ViewHolder {
         val viewHolder: RecyclerView.ViewHolder?
@@ -57,6 +65,13 @@ class AnimeAdapter(private val context: Context) : RecyclerView.Adapter<Recycler
         animeVH.mAnimeBtn.setOnClickListener {
             val browse = Intent(Intent.ACTION_VIEW, Uri.parse(anime?.url))
             context.startActivity(browse)
+        }
+
+        holder.itemView.setOnClickListener {
+            val detailIntent = Intent(holder.itemView.context, DetailActivity::class.java)
+            detailIntent.putExtra("anime", anime)
+            detailIntent.putExtra("activity", "anime")
+            holder.itemView.context.startActivity(detailIntent)
         }
     }
 

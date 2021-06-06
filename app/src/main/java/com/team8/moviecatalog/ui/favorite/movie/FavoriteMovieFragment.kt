@@ -9,16 +9,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.team8.moviecatalog.R
-import com.team8.moviecatalog.adapter.FavoriteAdapter
-import com.team8.moviecatalog.database.movie.AppMovieDatabase
+import com.team8.moviecatalog.adapter.FavoriteMovieAdapter
+import com.team8.moviecatalog.database.AppDatabase
+import com.team8.moviecatalog.database.movie.MovieEntity
 import kotlinx.android.synthetic.main.empty_state.*
 import kotlinx.android.synthetic.main.fragment_favorite_movie.*
+import java.util.ArrayList
 
 
 class FavoriteMovieFragment : Fragment() {
 
-    private lateinit var db: AppMovieDatabase
-    private lateinit var favoriteAdapter: FavoriteAdapter
+    private lateinit var db: AppDatabase
+    private lateinit var favoriteMovieAdapter: FavoriteMovieAdapter
     private lateinit var ctx: Context
 
     override fun onCreateView(
@@ -29,7 +31,7 @@ class FavoriteMovieFragment : Fragment() {
         ctx = this.requireContext()
         db = Room.databaseBuilder(
             ctx,
-            AppMovieDatabase::class.java, "favorite"
+            AppDatabase::class.java, "favorite"
         ).build()
         return root
     }
@@ -38,15 +40,17 @@ class FavoriteMovieFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         rv_favorite_movie.setHasFixedSize(true)
-        favoriteAdapter = FavoriteAdapter(ctx, db)
-        favoriteAdapter.notifyDataSetChanged()
+        favoriteMovieAdapter = FavoriteMovieAdapter(ctx, db)
+        favoriteMovieAdapter.notifyDataSetChanged()
         rv_favorite_movie.layoutManager = LinearLayoutManager(context)
-        rv_favorite_movie.adapter = favoriteAdapter
+        rv_favorite_movie.adapter = favoriteMovieAdapter
 
         db.movieDao().getAll().observe({ lifecycle }, { movieList ->
             if (movieList.isNotEmpty()) {
+                val movieArray = ArrayList<MovieEntity>()
+                movieList.forEach{movieArray.add(it)}
                 favorite_movie_progressbar.visibility = View.GONE
-                favoriteAdapter.setData(movieList)
+                favoriteMovieAdapter.setData(movieArray)
             }
             else{
                 favorite_movie_progressbar.visibility = View.GONE
