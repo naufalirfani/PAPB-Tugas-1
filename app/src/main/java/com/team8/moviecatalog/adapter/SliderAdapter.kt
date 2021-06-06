@@ -10,9 +10,7 @@ import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.smarteist.autoimageslider.SliderViewAdapter
-import com.team8.moviecatalog.R
-import com.team8.moviecatalog.SettingActivity
-import com.team8.moviecatalog.TrailerActivity
+import com.team8.moviecatalog.*
 import com.team8.moviecatalog.models.movie.ResultItem
 import com.team8.moviecatalog.utils.loadFromUrl
 import kotlinx.android.synthetic.main.image_slider_layout_item.view.*
@@ -59,6 +57,13 @@ class SliderAdapter(private val context: Context) : SliderViewAdapter<SliderAdap
             val intent = Intent(context, TrailerActivity::class.java)
             intent.putExtra("videoId", videoId)
             context?.startActivity(intent)
+        }
+
+        viewHolder.itemView.setOnClickListener {
+            val detailIntent = Intent(viewHolder.itemView.context, DetailActivity::class.java)
+            detailIntent.putExtra("movie", sliderItem)
+            detailIntent.putExtra("activity", "movie")
+            viewHolder.itemView.context.startActivity(detailIntent)
         }
     }
 

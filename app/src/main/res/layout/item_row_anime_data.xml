@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="8dp"
+    app:cardUseCompatPadding="true"
+    app:cardMaxElevation="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cons_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/img_anime"
+            android:layout_width="100dp"
+            android:layout_height="140dp"
+            android:elevation="5dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@id/cons_item"
+            app:layout_constraintStart_toStartOf="@id/cons_item"
+            app:layout_constraintTop_toTopOf="@id/cons_item"
+            app:riv_corner_radius="10dp"
+            android:src="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tv_anime_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="10dp"
+            android:textColor="?colorSecondary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_anime_episode"
+            app:layout_constraintStart_toEndOf="@id/img_anime"
+            app:layout_constraintEnd_toEndOf="@id/cons_item"
+            app:layout_constraintTop_toTopOf="@id/cons_item"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="@string/movie_title" />
+
+        <TextView
+            android:id="@+id/tv_anime_episode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:paddingTop="5dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="14sp"
+            android:textColor="?colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/img_anime"
+            app:layout_constraintEnd_toEndOf="@id/cons_item"
+            app:layout_constraintTop_toBottomOf="@+id/tv_anime_title"
+            tools:text="@string/movie_description" />
+        <com.iarcuschin.simpleratingbar.SimpleRatingBar
+            android:id="@+id/anime_ratingbar"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"
+            android:clickable="false"
+            app:srb_fillColor="#FFC107"
+            app:srb_borderColor="#FFC107"
+            app:srb_pressedFillColor="#FFC107"
+            app:srb_pressedBorderColor="#FFC107"
+            app:srb_stepSize="0.1"
+            app:srb_gravity="left"
+            app:srb_starBorderWidth="3"
+            app:srb_isIndicator="true"
+            app:layout_constraintStart_toEndOf="@id/img_anime"
+            app:layout_constraintTop_toBottomOf="@+id/tv_anime_episode"/>
+        <TextView
+            android:id="@+id/tv_anime_rating"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:gravity="center"
+            android:textColor="#FFC107"
+            android:paddingEnd="4dp"
+            tools:text="Rating"
+            android:paddingStart="8dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/anime_ratingbar"
+            app:layout_constraintTop_toTopOf="@id/anime_ratingbar"
+            app:layout_constraintBottom_toBottomOf="@id/anime_ratingbar"/>
+
+        <ImageButton
+            android:id="@+id/btn_anime_page"
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="10dp"
+            android:padding="8dp"
+            android:fontFamily="@font/pt_sans_bold"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_button_w_border"
+            android:textColor="@color/animeColor"
+            android:src="@drawable/my_anime_list"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toEndOf="@id/img_anime"
+            app:layout_constraintTop_toBottomOf="@+id/anime_ratingbar" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

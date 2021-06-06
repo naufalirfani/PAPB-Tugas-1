@@ -42,6 +42,19 @@ class GenreAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHol
             context.getString(R.string.thriller),
             context.getString(R.string.western))
 
+    private val arrayGenreTextEng = arrayOf(
+            "Action",
+            "Adventure",
+            "Animation",
+            "Comedy",
+            "Drama",
+            "Fantasy",
+            "Horror",
+            "Romance",
+            "Sci-Fi",
+            "Thriller",
+            "Western")
+
     override fun onCreateViewHolder(parent: ViewGroup, i: Int): RecyclerView.ViewHolder {
         val viewHolder: RecyclerView.ViewHolder?
         val inflater = LayoutInflater.from(parent.context)
@@ -62,7 +75,8 @@ class GenreAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHol
 
         movieVH.mGenreBtn.setOnClickListener {
             val genreIntent = Intent(holder.itemView.context, GenreActivity::class.java)
-            genreIntent.putExtra("genre", genreText)
+            genreIntent.putExtra("genre", arrayGenreTextEng[position])
+            genreIntent.putExtra("genreTitle", genreText)
             holder.itemView.context.startActivity(genreIntent)
         }
 

@@ -44,7 +44,7 @@ class GenreActivity : AppCompatActivity() {
 
         movieViewModel = ViewModelProvider(this).get(MovieViewModel::class.java)
         genre = intent.getStringExtra("genre")
-        settingActivity.themeSetting(genre.toString(), this, supportActionBar, resources)
+        settingActivity.themeSetting(intent.getStringExtra("genreTitle").toString(), this, supportActionBar, resources)
 
         binding.movieGenreShimmerView.startShimmerAnimation()
 
